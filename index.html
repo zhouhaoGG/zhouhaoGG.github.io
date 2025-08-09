@@ -1,5 +1,1143 @@
-<html>
-  <body>
-    <h1>This zhouhaoGG's website!</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>zhouhaoGG | 初中生程序员</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Oxanium:wght@300;500;700&display=swap"
+		rel="stylesheet">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		:root {
+			--primary: #00f3ff;
+			--secondary: #ff00c8;
+			--accent: #ffeb3b;
+			--dark: #0a0a16;
+			--darker: #050510;
+			--neon-green: #39ff14;
+			--neon-purple: #bc13fe;
+		}
+
+		body {
+			background: linear-gradient(135deg, var(--darker), var(--dark));
+			color: #fff;
+			font-family: 'Oxanium', sans-serif;
+			overflow-x: hidden;
+			min-height: 100vh;
+			line-height: 1.6;
+		}
+
+		.particles-bg {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+		}
+
+		.particle {
+			position: absolute;
+			border-radius: 50%;
+			background: var(--primary);
+			box-shadow: 0 0 15px var(--primary);
+		}
+
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 20px;
+		}
+
+		/* 导航栏 */
+		header {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 1000;
+			padding: 15px 0;
+			backdrop-filter: blur(10px);
+			background: rgba(10, 10, 22, 0.7);
+			border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+		}
+
+		nav {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.logo {
+			font-family: 'Orbitron', sans-serif;
+			font-size: 28px;
+			font-weight: 900;
+			background: linear-gradient(45deg, var(--neon-green), var(--neon-purple));
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			text-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+		}
+
+		.nav-links {
+			display: flex;
+			list-style: none;
+		}
+
+		.nav-links li {
+			margin-left: 30px;
+		}
+
+		.nav-links a {
+			color: #fff;
+			text-decoration: none;
+			font-size: 18px;
+			font-weight: 500;
+			position: relative;
+			padding: 5px 0;
+			transition: 0.3s;
+		}
+
+		.nav-links a:hover {
+			color: var(--neon-green);
+		}
+
+		.nav-links a::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 0;
+			height: 2px;
+			background: var(--neon-green);
+			transition: 0.3s;
+		}
+
+		.nav-links a:hover::after {
+			width: 100%;
+		}
+
+		.mobile-menu-btn {
+			display: none;
+			background: none;
+			border: none;
+			color: white;
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		/* 英雄区域 */
+		.hero {
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.hero-content {
+			max-width: 700px;
+			z-index: 2;
+			padding-top: 60px;
+		}
+
+		.hero h1 {
+			font-family: 'Orbitron', sans-serif;
+			font-size: 4rem;
+			margin-bottom: 20px;
+			line-height: 1.1;
+		}
+
+		.hero h1 span {
+			display: block;
+			background: linear-gradient(45deg, var(--neon-green), var(--neon-purple));
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+
+		.hero p {
+			font-size: 1.3rem;
+			margin-bottom: 30px;
+			max-width: 600px;
+			color: #ddd;
+		}
+
+		.hero-highlight {
+			color: var(--neon-green);
+			font-weight: bold;
+		}
+
+		.cta-button {
+			display: inline-block;
+			padding: 12px 35px;
+			background: linear-gradient(45deg, var(--neon-green), var(--neon-purple));
+			color: var(--dark);
+			text-decoration: none;
+			font-size: 1.1rem;
+			font-weight: 700;
+			border-radius: 50px;
+			transition: 0.4s;
+			border: none;
+			cursor: pointer;
+			position: relative;
+			overflow: hidden;
+			z-index: 1;
+			margin-top: 15px;
+			font-family: 'Orbitron', sans-serif;
+			letter-spacing: 1px;
+		}
+
+		.cta-button::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(45deg, var(--neon-purple), var(--neon-green));
+			z-index: -1;
+			opacity: 0;
+			transition: 0.4s;
+		}
+
+		.cta-button:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 30px rgba(57, 255, 20, 0.4);
+		}
+
+		.cta-button:hover::before {
+			opacity: 1;
+		}
+
+		.hero-image {
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 40%;
+			max-width: 600px;
+			z-index: 1;
+			filter: drop-shadow(0 0 40px rgba(57, 255, 20, 0.5));
+			animation: float 6s ease-in-out infinite;
+		}
+
+		@keyframes float {
+			0% {
+				transform: translateY(-50%) translateX(0);
+			}
+
+			50% {
+				transform: translateY(-55%) translateX(10px);
+			}
+
+			100% {
+				transform: translateY(-50%) translateX(0);
+			}
+		}
+
+		/* 关于部分 */
+		.section {
+			padding: 100px 0;
+			position: relative;
+		}
+
+		.section-title {
+			text-align: center;
+			margin-bottom: 70px;
+			position: relative;
+		}
+
+		.section-title h2 {
+			font-family: 'Orbitron', sans-serif;
+			font-size: 2.8rem;
+			text-transform: uppercase;
+			letter-spacing: 3px;
+			display: inline-block;
+			background: linear-gradient(45deg, var(--neon-green), var(--neon-purple));
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+
+		.section-title::after {
+			content: '';
+			position: absolute;
+			bottom: -15px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100px;
+			height: 4px;
+			background: linear-gradient(45deg, var(--neon-green), var(--neon-purple));
+			border-radius: 2px;
+		}
+
+		.about-content {
+			display: flex;
+			align-items: center;
+			gap: 50px;
+		}
+
+		.about-text {
+			flex: 1;
+		}
+
+		.about-text h3 {
+			font-size: 2rem;
+			margin-bottom: 20px;
+			color: var(--neon-green);
+		}
+
+		.about-text p {
+			margin-bottom: 15px;
+			font-size: 1.1rem;
+			line-height: 1.8;
+		}
+
+		.about-image {
+			flex: 1;
+			position: relative;
+			display: flex;
+			justify-content: center;
+		}
+
+		.about-image::before {
+			content: '';
+			position: absolute;
+			top: -20px;
+			left: -20px;
+			width: 100%;
+			height: 100%;
+			border: 3px solid var(--neon-green);
+			border-radius: 10px;
+			z-index: -1;
+		}
+
+		.code-terminal {
+			width: 100%;
+			max-width: 500px;
+			background: rgba(20, 20, 40, 0.8);
+			border-radius: 10px;
+			overflow: hidden;
+			box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+			font-family: 'Courier New', monospace;
+		}
+
+		.terminal-header {
+			background: rgba(30, 30, 50, 0.9);
+			padding: 10px 15px;
+			display: flex;
+			align-items: center;
+			border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+		}
+
+		.terminal-buttons {
+			display: flex;
+			gap: 8px;
+		}
+
+		.terminal-button {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+		}
+
+		.terminal-button.close {
+			background: #ff5f56;
+		}
+
+		.terminal-button.minimize {
+			background: #ffbd2e;
+		}
+
+		.terminal-button.maximize {
+			background: #27c93f;
+		}
+
+		.terminal-title {
+			flex: 1;
+			text-align: center;
+			color: #aaa;
+			font-size: 0.9rem;
+		}
+
+		.terminal-body {
+			padding: 20px;
+			height: 300px;
+			overflow-y: auto;
+		}
+
+		.terminal-line {
+			margin-bottom: 8px;
+			display: flex;
+		}
+
+		.terminal-prompt {
+			color: var(--neon-green);
+			margin-right: 10px;
+		}
+
+		.terminal-command {
+			color: #fff;
+		}
+
+		.terminal-output {
+			color: #aaa;
+			margin-left: 25px;
+		}
+
+		/* 技能部分 */
+		.skills-container {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+			gap: 30px;
+		}
+
+		.skill-card {
+			background: rgba(20, 20, 40, 0.6);
+			border-radius: 15px;
+			padding: 30px;
+			text-align: center;
+			transition: 0.4s;
+			position: relative;
+			overflow: hidden;
+			border: 1px solid rgba(57, 255, 20, 0.1);
+			backdrop-filter: blur(10px);
+		}
+
+		.skill-card:hover {
+			transform: translateY(-10px);
+			border-color: var(--neon-green);
+			box-shadow: 0 10px 30px rgba(57, 255, 20, 0.2);
+		}
+
+		.skill-card i {
+			font-size: 3.5rem;
+			color: var(--neon-green);
+			margin-bottom: 20px;
+		}
+
+		.skill-card h3 {
+			font-size: 1.8rem;
+			margin-bottom: 15px;
+			color: var(--accent);
+		}
+
+		.skill-card p {
+			color: #aaa;
+		}
+
+		/* 项目部分 */
+		.projects-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+			gap: 40px;
+		}
+
+		.project-card {
+			border-radius: 15px;
+			overflow: hidden;
+			position: relative;
+			height: 300px;
+			transform-style: preserve-3d;
+			perspective: 1000px;
+		}
+
+		.project-card-inner {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			transition: transform 0.6s;
+			transform-style: preserve-3d;
+		}
+
+		.project-card:hover .project-card-inner {
+			transform: rotateY(180deg);
+		}
+
+		.project-card-front,
+		.project-card-back {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			backface-visibility: hidden;
+			border-radius: 15px;
+		}
+
+		.project-card-front {
+			background-size: cover;
+			background-position: center;
+			display: flex;
+			align-items: flex-end;
+		}
+
+		.project-card-front::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(transparent 60%, rgba(0, 0, 0, 0.9));
+		}
+
+		.project-card-front .project-info {
+			padding: 25px;
+			z-index: 2;
+		}
+
+		.project-card-front h3 {
+			font-size: 1.8rem;
+			margin-bottom: 10px;
+			color: #fff;
+		}
+
+		.project-card-front p {
+			color: #ddd;
+		}
+
+		.project-card-back {
+			background: rgba(10, 10, 30, 0.95);
+			padding: 30px;
+			transform: rotateY(180deg);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			border: 2px solid var(--neon-green);
+		}
+
+		.project-card-back h3 {
+			color: var(--neon-green);
+			font-size: 1.8rem;
+			margin-bottom: 15px;
+		}
+
+		.project-card-back p {
+			margin-bottom: 20px;
+			line-height: 1.6;
+		}
+
+		.project-link {
+			display: inline-flex;
+			align-items: center;
+			color: var(--neon-purple);
+			text-decoration: none;
+			font-weight: 700;
+			margin-top: 10px;
+			transition: 0.3s;
+		}
+
+		.project-link:hover {
+			color: var(--neon-green);
+		}
+
+		.project-link i {
+			margin-left: 8px;
+			transition: 0.3s;
+		}
+
+		.project-link:hover i {
+			transform: translateX(5px);
+		}
+
+		/* Scratch项目展示 */
+		.scratch-projects {
+			background: rgba(15, 15, 30, 0.5);
+			padding: 80px 0;
+		}
+
+		.scratch-container {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			gap: 30px;
+		}
+
+		.scratch-card {
+			background: rgba(25, 25, 45, 0.7);
+			border-radius: 15px;
+			overflow: hidden;
+			transition: transform 0.3s;
+			border: 1px solid rgba(57, 255, 20, 0.1);
+		}
+
+		.scratch-card:hover {
+			transform: translateY(-10px);
+			border-color: var(--neon-purple);
+			box-shadow: 0 10px 30px rgba(188, 19, 254, 0.2);
+		}
+
+		.scratch-image {
+			height: 200px;
+			background-size: cover;
+			background-position: center;
+			position: relative;
+		}
+
+		.scratch-image::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.8));
+		}
+
+		.scratch-info {
+			padding: 20px;
+		}
+
+		.scratch-info h3 {
+			color: var(--neon-purple);
+			margin-bottom: 10px;
+			font-size: 1.4rem;
+		}
+
+		.scratch-info p {
+			color: #ccc;
+			font-size: 0.95rem;
+			line-height: 1.6;
+		}
+
+		/* 联系部分 */
+		.contact-container {
+			display: flex;
+			gap: 50px;
+		}
+
+		.contact-info {
+			flex: 1;
+		}
+
+		.contact-form {
+			flex: 1;
+		}
+
+		.contact-info h3 {
+			font-size: 1.8rem;
+			color: var(--neon-green);
+			margin-bottom: 20px;
+		}
+
+		.contact-item {
+			display: flex;
+			align-items: center;
+			margin-bottom: 25px;
+		}
+
+		.contact-item i {
+			width: 60px;
+			height: 60px;
+			background: rgba(57, 255, 20, 0.1);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.5rem;
+			color: var(--neon-green);
+			margin-right: 20px;
+			flex-shrink: 0;
+		}
+
+		.contact-item-content h4 {
+			font-size: 1.3rem;
+			margin-bottom: 5px;
+		}
+
+		.contact-item-content p {
+			color: #aaa;
+		}
+
+		.form-group {
+			margin-bottom: 25px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 8px;
+			font-size: 1.1rem;
+			color: #ddd;
+		}
+
+		.form-control {
+			width: 100%;
+			padding: 15px;
+			background: rgba(30, 30, 50, 0.5);
+			border: 1px solid rgba(57, 255, 20, 0.2);
+			border-radius: 8px;
+			color: #fff;
+			font-size: 1.1rem;
+			transition: 0.3s;
+			font-family: 'Oxanium', sans-serif;
+		}
+
+		.form-control:focus {
+			outline: none;
+			border-color: var(--neon-green);
+			box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+		}
+
+		textarea.form-control {
+			min-height: 150px;
+			resize: vertical;
+		}
+
+		/* 页脚 */
+		footer {
+			background: rgba(5, 5, 15, 0.9);
+			padding: 50px 0 20px;
+			border-top: 1px solid rgba(57, 255, 20, 0.1);
+		}
+
+		.footer-content {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 40px;
+		}
+
+		.footer-about {
+			flex: 2;
+			padding-right: 30px;
+		}
+
+		.footer-links {
+			flex: 1;
+		}
+
+		.footer-links h3,
+		.footer-about h3 {
+			color: var(--neon-green);
+			font-size: 1.5rem;
+			margin-bottom: 20px;
+			position: relative;
+		}
+
+		.footer-links h3::after,
+		.footer-about h3::after {
+			content: '';
+			position: absolute;
+			bottom: -8px;
+			left: 0;
+			width: 40px;
+			height: 3px;
+			background: var(--neon-green);
+		}
+
+		.footer-links ul {
+			list-style: none;
+		}
+
+		.footer-links li {
+			margin-bottom: 12px;
+		}
+
+		.footer-links a {
+			color: #aaa;
+			text-decoration: none;
+			transition: 0.3s;
+		}
+
+		.footer-links a:hover {
+			color: var(--neon-green);
+			padding-left: 5px;
+		}
+
+		.social-icons {
+			display: flex;
+			gap: 15px;
+			margin-top: 20px;
+		}
+
+		.social-icon {
+			width: 45px;
+			height: 45px;
+			border-radius: 50%;
+			background: rgba(57, 255, 20, 0.1);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--neon-green);
+			font-size: 1.3rem;
+			transition: 0.3s;
+		}
+
+		.social-icon:hover {
+			background: var(--neon-green);
+			color: var(--dark);
+			transform: translateY(-5px);
+		}
+
+		.copyright {
+			text-align: center;
+			padding-top: 30px;
+			border-top: 1px solid rgba(255, 255, 255, 0.05);
+			color: #777;
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 992px) {
+			.hero h1 {
+				font-size: 3.5rem;
+			}
+
+			.about-content {
+				flex-direction: column;
+			}
+
+			.contact-container {
+				flex-direction: column;
+			}
+
+			.footer-content {
+				flex-direction: column;
+				gap: 40px;
+			}
+
+			.hero-image {
+				display: none;
+			}
+
+			.section-title h2 {
+				font-size: 2.5rem;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.hero h1 {
+				font-size: 2.8rem;
+			}
+
+			.nav-links {
+				display: none;
+				position: absolute;
+				top: 100%;
+				left: 0;
+				width: 100%;
+				background: rgba(10, 10, 22, 0.95);
+				flex-direction: column;
+				padding: 20px 0;
+				text-align: center;
+			}
+
+			.nav-links.active {
+				display: flex;
+			}
+
+			.nav-links li {
+				margin: 15px 0;
+			}
+
+			.mobile-menu-btn {
+				display: block;
+			}
+
+			.projects-grid,
+			.scratch-container {
+				grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			}
+
+			.section {
+				padding: 80px 0;
+			}
+		}
+
+		@media (max-width: 480px) {
+			.hero h1 {
+				font-size: 2.2rem;
+			}
+
+			.hero p {
+				font-size: 1.1rem;
+			}
+
+			.section-title h2 {
+				font-size: 2rem;
+			}
+
+			.projects-grid,
+			.scratch-container {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 粒子背景 -->
+	<div class="particles-bg" id="particles-bg"></div>
+
+	<!-- 导航栏 -->
+	<header>
+		<div class="container">
+			<nav>
+				<div class="logo">zhouhaoGG</div>
+				<ul class="nav-links">
+					<li><a href="#home">首页</a></li>
+					<li><a href="#about">关于我</a></li>
+					<li><a href="#skills">技能</a></li>
+					<li><a href="#projects">C++项目</a></li>
+					<li><a href="#scratch">Scratch项目</a></li>
+					<li><a href="#contact">联系</a></li>
+				</ul>
+				<button class="mobile-menu-btn" id="mobileMenuBtn">
+					<i class="fas fa-bars"></i>
+				</button>
+			</nav>
+		</div>
+	</header>
+
+	<!-- 首页 -->
+	<section class="hero" id="home">
+		<div class="container">
+			<div class="hero-content">
+				<h1>你好，我是<br><span>zhouhaoGG</span></h1>
+				<p>一名<span class="hero-highlight">初中生</span> | 热爱<span class="hero-highlight">C/C++</span>和<span
+						class="hero-highlight">Scratch</span>开发</p>
+				<p>专注于<span class="hero-highlight">游戏开发</span>、<span class="hero-highlight">实用工具</span>和<span
+						class="hero-highlight">3D建模</span>，创造有趣的技术项目</p>
+				<a href="#projects" class="cta-button">查看我的项目 <i class="fas fa-arrow-right"></i></a>
+			</div>
+		</div>
+	</section>
+
+	<!-- 关于我 -->
+	<section class="section" id="about">
+		<div class="container">
+			<div class="section-title">
+				<h2>关于我</h2>
+			</div>
+			<div class="about-content">
+				<div class="about-text">
+					<h3>初中生 & 编程爱好者</h3>
+					<p>你好！我是 zhouhaoGG，一名充满热情的初中生程序员。从小学开始接触编程，我热爱用代码创造有趣的项目和解决实际问题。</p>
+					<p>我的编程之旅始于 Scratch，后来逐渐学习 C++ 和 Python。我喜欢挑战复杂的项目，如物理引擎、神经网络和游戏开发，这些项目不仅锻炼了我的逻辑思维，也让我体验到创造的乐趣。</p>
+					<p>在编程之外，我也喜欢数学、物理和电子游戏。这些兴趣帮助我更好地理解编程背后的原理，并将创意转化为现实。</p>
+					<p>我相信编程是未来的重要技能，我会继续探索和学习新技术，创造更多有趣的项目！</p>
+					<a href="#projects" class="cta-button">查看我的项目</a>
+				</div>
+				<div class="about-image">
+					<div class="code-terminal">
+						<div class="terminal-header">
+							<div class="terminal-buttons">
+								<div class="terminal-button close"></div>
+								<div class="terminal-button minimize"></div>
+								<div class="terminal-button maximize"></div>
+							</div>
+							<div class="terminal-title">zhouhaoGG@terminal ~</div>
+						</div>
+						<div class="terminal-body">
+							<div class="terminal-line">
+								<span class="terminal-prompt">$</span>
+								<span class="terminal-command">whoami</span>
+							</div>
+							<div class="terminal-output">zhouhaoGG - Student & Programmer</div>
+
+							<div class="terminal-line">
+								<span class="terminal-prompt">$</span>
+								<span class="terminal-command">skills</span>
+							</div>
+							<div class="terminal-output">C++, Scratch, Python, Game Dev, Physics Simulation, AI</div>
+
+							<div class="terminal-line">
+								<span class="terminal-prompt">$</span>
+								<span class="terminal-command">projects --list</span>
+							</div>
+							<div class="terminal-output">Maze Generator, Falling Sand Simulation, Neural Genetic
+								Algorithm, Brainfuck Interpreter, 3D Wallpaper, M3U8 Downloader, OpenCV Projects,
+								Physics Engines</div>
+
+							<div class="terminal-line">
+								<span class="terminal-prompt">$</span>
+								<span class="terminal-command">education</span>
+							</div>
+							<div class="terminal-output">Middle School Student</div>
+
+							<div class="terminal-line">
+								<span class="terminal-prompt">$</span>
+								<span class="terminal-command">contact</span>
+							</div>
+							<div class="terminal-output">contact@zhouhaogg.com</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 联系 -->
+	<section class="section" id="contact">
+		<div class="container">
+			<div class="section-title">
+				<h2>联系我</h2>
+			</div>
+			<div class="contact-container">
+				<div class="contact-info">
+					<h3>随时联系</h3>
+					<div class="contact-item">
+						<i class="fas fa-envelope"></i>
+						<div class="contact-item-content">
+							<h4>邮箱</h4>
+							<p>zhouhaoGG123@qq.com</p>
+						</div>
+					</div>
+					<div class="contact-item">
+						<i class="fab fa-github"></i>
+						<div class="contact-item-content">
+							<h4>GitHub</h4>
+							<p>github.com/zhouhaoGG</p>
+						</div>
+					</div>
+					<div class="contact-item">
+						<i class="fas fa-map-marker-alt"></i>
+						<div class="contact-item-content">
+							<h4>位置</h4>
+							<p>中国 · 学生开发者</p>
+						</div>
+					</div>
+					<div class="social-icons">
+						<a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-scratch"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+				<div class="contact-form">
+					<form>
+						<div class="form-group">
+							<label for="name">姓名</label>
+							<input type="text" id="name" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label for="email">邮箱</label>
+							<input type="email" id="email" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label for="subject">主题</label>
+							<input type="text" id="subject" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label for="message">消息</label>
+							<textarea id="message" class="form-control" required></textarea>
+						</div>
+						<button type="submit" class="cta-button">发送消息</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 页脚 -->
+	<footer>
+		<div class="container">
+			<div class="footer-content">
+				<div class="footer-about">
+					<h3>zhouhaoGG</h3>
+					<p>初中生程序员，热爱创造有趣的编程项目。通过代码探索世界，用技术实现创意。</p>
+					<div class="social-icons">
+						<a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-scratch"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+						<a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+					</div>
+				</div>
+				<div class="footer-links">
+					<h3>快速链接</h3>
+					<ul>
+						<li><a href="#home">首页</a></li>
+						<li><a href="#about">关于我</a></li>
+						<li><a href="#skills">技能</a></li>
+						<li><a href="#projects">C++项目</a></li>
+						<li><a href="#scratch">Scratch项目</a></li>
+						<li><a href="#contact">联系</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="copyright">
+				<p>&copy; 2025 zhouhaoGG. 保留所有权利。初中生程序员</p>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		// 粒子背景效果
+		document.addEventListener('DOMContentLoaded', function () {
+			const particlesBg = document.getElementById('particles-bg');
+			const colors = ['#00f3ff', '#ff00c8', '#39ff14', '#bc13fe', '#ffffff'];
+
+			// 创建粒子
+			for (let i = 0; i < 100; i++) {
+				const particle = document.createElement('div');
+				particle.classList.add('particle');
+
+				// 随机属性
+				const size = Math.random() * 5 + 2;
+				const posX = Math.random() * 100;
+				const posY = Math.random() * 100;
+				const color = colors[Math.floor(Math.random() * colors.length)];
+				const animationDuration = Math.random() * 10 + 5;
+				const animationDelay = Math.random() * 5;
+
+				particle.style.width = `${size}px`;
+				particle.style.height = `${size}px`;
+				particle.style.left = `${posX}%`;
+				particle.style.top = `${posY}%`;
+				particle.style.backgroundColor = color;
+				particle.style.boxShadow = `0 0 10px ${color}`;
+				particle.style.animation = `float ${animationDuration}s ease-in-out ${animationDelay}s infinite`;
+
+				particlesBg.appendChild(particle);
+			}
+
+			// 滚动动画
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('animate');
+					}
+				});
+			}, { threshold: 0.1 });
+
+			document.querySelectorAll('.skill-card, .project-card, .about-content, .contact-container, .scratch-card').forEach(el => {
+				observer.observe(el);
+			});
+
+			// 移动菜单切换
+			const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+			const navLinks = document.querySelector('.nav-links');
+
+			mobileMenuBtn.addEventListener('click', () => {
+				navLinks.classList.toggle('active');
+			});
+
+			// 平滑滚动
+			document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+				anchor.addEventListener('click', function (e) {
+					e.preventDefault();
+
+					const targetId = this.getAttribute('href');
+					const targetElement = document.querySelector(targetId);
+
+					if (targetElement) {
+						window.scrollTo({
+							top: targetElement.offsetTop - 80,
+							behavior: 'smooth'
+						});
+
+						// 关闭移动菜单
+						navLinks.classList.remove('active');
+					}
+				});
+			});
+		});
+	</script>
+</body>
+
 </html>
