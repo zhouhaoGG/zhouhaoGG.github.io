@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>探索贝利亚共和国 - 五灵王创立的伟大国度</title>
+	<link rel="stylesheet" href="../../ajax-libs-font-awesome-6.4.0-css-all.min/css/font-awesome-local.min.css">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: 'Microsoft YaHei', sans-serif;
+		}
+
+		:root {
+			--primary: #0a0a2a;
+			--secondary: #1a1a4a;
+			--accent: #d4af37;
+			--light: #e6e6ff;
+			--fire: #ff6b6b;
+			--water: #4d9de0;
+			--earth: #8a9a5b;
+			--wind: #7bd0c1;
+			--void: #a45ee5;
+		}
+
+		body {
+			background: linear-gradient(135deg, var(--primary), var(--secondary));
+			color: var(--light);
+			min-height: 100vh;
+			background-attachment: fixed;
+			overflow-x: hidden;
+		}
+
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 20px;
+		}
+
+		/* 头部样式 */
+		header {
+			background: rgba(10, 10, 42, 0.95);
+			padding: 20px 0;
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			border-bottom: 3px solid var(--accent);
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+		}
+
+		.header-content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.logo {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+		}
+
+		.logo-img {
+			width: 70px;
+			height: 70px;
+			background: linear-gradient(45deg, var(--fire), var(--water), var(--earth), var(--wind), var(--void));
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 2px solid var(--accent);
+			box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+		}
+
+		.logo-img i {
+			font-size: 36px;
+			color: white;
+		}
+
+		.logo-text {
+			text-transform: uppercase;
+		}
+
+		.logo-text h1 {
+			font-size: 28px;
+			letter-spacing: 2px;
+			background: linear-gradient(to right, #d4af37, #ffd700, #ffffff);
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+			text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+		}
+
+		.logo-text p {
+			font-size: 14px;
+			color: var(--accent);
+			letter-spacing: 3px;
+			margin-top: 5px;
+		}
+
+		nav ul {
+			display: flex;
+			list-style: none;
+			gap: 30px;
+		}
+
+		nav a {
+			color: var(--light);
+			text-decoration: none;
+			font-size: 18px;
+			font-weight: bold;
+			padding: 8px 15px;
+			border-radius: 5px;
+			transition: all 0.3s ease;
+			position: relative;
+		}
+
+		nav a:hover {
+			background: rgba(212, 175, 55, 0.2);
+			color: var(--accent);
+		}
+
+		nav a::after {
+			content: '';
+			position: absolute;
+			bottom: -5px;
+			left: 0;
+			width: 0;
+			height: 3px;
+			background: var(--accent);
+			transition: width 0.3s ease;
+		}
+
+		nav a:hover::after {
+			width: 100%;
+		}
+
+		/* 面包屑导航 */
+		.breadcrumb {
+			padding: 20px 0;
+			font-size: 1rem;
+			color: var(--accent);
+		}
+
+		.breadcrumb a {
+			color: var(--light);
+			text-decoration: none;
+			transition: color 0.3s ease;
+		}
+
+		.breadcrumb a:hover {
+			color: var(--accent);
+		}
+
+		/* 页面标题 */
+		.page-title {
+			text-align: center;
+			margin: 40px 0;
+		}
+
+		.page-title h1 {
+			font-size: 3.5rem;
+			margin-bottom: 20px;
+			text-transform: uppercase;
+			letter-spacing: 3px;
+			background: linear-gradient(to right, #d4af37, #ffd700, #ffffff);
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+			text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+		}
+
+		.page-title p {
+			font-size: 1.2rem;
+			max-width: 800px;
+			margin: 0 auto;
+			line-height: 1.6;
+		}
+
+		/* 地区介绍 */
+		.region-section {
+			padding: 60px 0;
+		}
+
+		.section-title {
+			text-align: center;
+			font-size: 2.5rem;
+			margin-bottom: 50px;
+			color: var(--accent);
+			position: relative;
+		}
+
+		.section-title::after {
+			content: '';
+			position: absolute;
+			bottom: -15px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100px;
+			height: 4px;
+			background: var(--accent);
+			border-radius: 2px;
+		}
+
+		.regions-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 30px;
+		}
+
+		.region-card {
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 15px;
+			overflow: hidden;
+			transition: all 0.3s ease;
+			border: 1px solid rgba(212, 175, 55, 0.3);
+			backdrop-filter: blur(10px);
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.region-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+			border-color: var(--accent);
+		}
+
+		.region-image {
+			height: 200px;
+			overflow: hidden;
+		}
+
+		.region-image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform 0.5s ease;
+		}
+
+		.region-card:hover .region-image img {
+			transform: scale(1.1);
+		}
+
+		.region-content {
+			padding: 25px;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.region-content h3 {
+			font-size: 1.8rem;
+			margin-bottom: 15px;
+			color: var(--accent);
+		}
+
+		.region-content p {
+			margin-bottom: 20px;
+			flex-grow: 1;
+		}
+
+		.element-badge {
+			display: inline-block;
+			padding: 5px 15px;
+			border-radius: 20px;
+			color: white;
+			font-weight: bold;
+			margin-top: 10px;
+		}
+
+		/* 地图区域 */
+		.map-section {
+			padding: 80px 0;
+			background: rgba(26, 26, 74, 0.7);
+		}
+
+		.map-container {
+			position: relative;
+			max-width: 900px;
+			margin: 0 auto;
+			height: 500px;
+			background: url('https://images.unsplash.com/photo-1585926527159-4d9bf2e5c3d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80') no-repeat center;
+			background-size: cover;
+			border-radius: 15px;
+			border: 5px solid var(--accent);
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+		}
+
+		.map-point {
+			position: absolute;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			background: var(--accent);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			transform: translate(-50%, -50%);
+			box-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
+			transition: all 0.3s ease;
+		}
+
+		.map-point:hover {
+			transform: translate(-50%, -50%) scale(1.2);
+		}
+
+		.map-point::after {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			background: transparent;
+			border: 2px solid var(--accent);
+			animation: pulse 2s infinite;
+		}
+
+		.map-point i {
+			color: white;
+			font-size: 16px;
+			z-index: 2;
+		}
+
+		.point-1 {
+			top: 30%;
+			left: 25%;
+		}
+
+		.point-2 {
+			top: 45%;
+			left: 60%;
+		}
+
+		.point-3 {
+			top: 70%;
+			left: 40%;
+		}
+
+		.point-4 {
+			top: 35%;
+			left: 75%;
+		}
+
+		.point-5 {
+			top: 60%;
+			left: 20%;
+		}
+
+		@keyframes pulse {
+			0% {
+				transform: scale(1);
+				opacity: 1;
+			}
+
+			100% {
+				transform: scale(2.5);
+				opacity: 0;
+			}
+		}
+
+		/* 旅行指南 */
+		.guide-section {
+			padding: 80px 0;
+		}
+
+		.guide-tabs {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 40px;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.tab-button {
+			padding: 12px 25px;
+			background: rgba(255, 255, 255, 0.1);
+			border: none;
+			border-radius: 30px;
+			color: var(--light);
+			font-size: 1rem;
+			font-weight: bold;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.tab-button:hover {
+			background: rgba(212, 175, 55, 0.3);
+		}
+
+		.tab-button.active {
+			background: var(--accent);
+			color: var(--primary);
+		}
+
+		.tab-content {
+			display: none;
+		}
+
+		.tab-content.active {
+			display: block;
+		}
+
+		.guide-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 25px;
+		}
+
+		.guide-item {
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 10px;
+			padding: 25px;
+			text-align: center;
+			transition: all 0.3s ease;
+			border: 1px solid rgba(212, 175, 55, 0.2);
+		}
+
+		.guide-item:hover {
+			transform: translateY(-5px);
+			border-color: var(--accent);
+		}
+
+		.guide-item i {
+			font-size: 2.5rem;
+			color: var(--accent);
+			margin-bottom: 15px;
+		}
+
+		.guide-item h3 {
+			font-size: 1.3rem;
+			margin-bottom: 10px;
+			color: var(--accent);
+		}
+
+		/* 召唤行动 */
+		.cta-section {
+			padding: 80px 0;
+			background: rgba(26, 26, 74, 0.7);
+			text-align: center;
+		}
+
+		.cta-content {
+			max-width: 700px;
+			margin: 0 auto;
+		}
+
+		.cta-button {
+			display: inline-block;
+			background: linear-gradient(45deg, var(--fire), var(--accent));
+			color: white;
+			padding: 15px 40px;
+			border-radius: 50px;
+			text-decoration: none;
+			font-weight: bold;
+			font-size: 1.2rem;
+			margin-top: 30px;
+			transition: all 0.3s ease;
+			box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+			border: 2px solid var(--accent);
+		}
+
+		.cta-button:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(255, 107, 107, 0.6);
+		}
+
+		/* 页脚 */
+		footer {
+			background: rgba(10, 10, 42, 0.95);
+			padding: 50px 0 20px;
+			border-top: 3px solid var(--accent);
+		}
+
+		.footer-content {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 40px;
+			margin-bottom: 40px;
+		}
+
+		.footer-column h3 {
+			color: var(--accent);
+			font-size: 1.5rem;
+			margin-bottom: 20px;
+			position: relative;
+			padding-bottom: 10px;
+		}
+
+		.footer-column h3::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 50px;
+			height: 3px;
+			background: var(--accent);
+		}
+
+		.footer-column ul {
+			list-style: none;
+		}
+
+		.footer-column ul li {
+			margin-bottom: 12px;
+		}
+
+		.footer-column ul li a {
+			color: var(--light);
+			text-decoration: none;
+			transition: all 0.3s ease;
+			display: block;
+		}
+
+		.footer-column ul li a:hover {
+			color: var(--accent);
+			transform: translateX(5px);
+		}
+
+		.copyright {
+			text-align: center;
+			padding-top: 20px;
+			border-top: 1px solid rgba(212, 175, 55, 0.2);
+			font-size: 0.9rem;
+			color: #aaa;
+		}
+
+		/* 动画效果 */
+		@keyframes float {
+			0% {
+				transform: translateY(0px);
+			}
+
+			50% {
+				transform: translateY(-20px);
+			}
+
+			100% {
+				transform: translateY(0px);
+			}
+		}
+
+		.floating {
+			animation: float 6s ease-in-out infinite;
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 992px) {
+			.page-title h1 {
+				font-size: 2.8rem;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.header-content {
+				flex-direction: column;
+				gap: 20px;
+			}
+
+			nav ul {
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+
+			.page-title h1 {
+				font-size: 2.2rem;
+			}
+
+			.map-container {
+				height: 400px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 头部 -->
+	<header>
+		<div class="container header-content">
+			<div class="logo">
+				<div class="logo-img">
+					<i class="fas fa-crown"></i>
+				</div>
+				<div class="logo-text">
+					<h1>贝利亚共和国</h1>
+					<p>BELIA REPUBLIC</p>
+				</div>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="https://zhouhaogg.github.io/bly/"><i class="fas fa-home"></i> 首页</a></li>
+					<li><a href="https://zhouhaogg.github.io/bly/about/"><i class="fas fa-landmark"></i> 关于国家</a></li>
+					<li><a href="#"><i class="fas fa-newspaper"></i> 国家新闻</a></li>
+					<li><a href="#"><i class="fas fa-users"></i> 政府机构</a></li>
+					<li><a href="#"><i class="fas fa-envelope"></i> 联系我们</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- 面包屑导航 -->
+	<div class="container breadcrumb">
+		<a href="https://zhouhaogg.github.io/bly/index.html">首页</a> > <span>探索我们的世界</span>
+	</div>
+
+	<!-- 页面标题 -->
+	<section class="page-title">
+		<div class="container">
+			<h1>探索贝利亚共和国</h1>
+			<p>欢迎来到由五灵王创立的奇幻国度！贝利亚共和国由五个元素区域组成，每个区域都拥有独特的文化、景观和魔法特性。加入我们，探索这个融合了魔法与科技的奇妙世界。</p>
+		</div>
+	</section>
+
+	<!-- 地区介绍 -->
+	<section class="region-section">
+		<div class="container">
+			<h2 class="section-title">五大元素区域</h2>
+			<div class="regions-grid">
+				<div class="region-card">
+					<div class="region-image">
+						<img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+							alt="火焰山脉">
+					</div>
+					<div class="region-content">
+						<h3>火焰山脉</h3>
+						<p>火焰山脉是火元素的故乡，这里有着活跃的火山、温泉和熔岩河流。居民掌握着强大的火焰魔法，以锻造和冶金技术闻名。</p>
+						<span class="element-badge" style="background: var(--fire);">火元素领域</span>
+					</div>
+				</div>
+
+				<div class="region-card">
+					<div class="region-image">
+						<img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+							alt="水晶湖泊">
+					</div>
+					<div class="region-content">
+						<h3>水晶湖泊</h3>
+						<p>水晶湖泊是水元素的领域，由无数湖泊、河流和瀑布组成。这里的水具有治愈特性，居民精通水系魔法和水下建筑。</p>
+						<span class="element-badge" style="background: var(--water);">水元素领域</span>
+					</div>
+				</div>
+
+				<div class="region-card">
+					<div class="region-image">
+						<img src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+							alt="巨石平原">
+					</div>
+					<div class="region-content">
+						<h3>巨石平原</h3>
+						<p>巨石平原是土元素的家乡，这里有高耸的山脉、深邃的峡谷和广阔的草原。居民擅长大地魔法和农业，建筑坚固耐用。</p>
+						<span class="element-badge" style="background: var(--earth);">土元素领域</span>
+					</div>
+				</div>
+
+				<div class="region-card">
+					<div class="region-image">
+						<img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+							alt="天空之城">
+					</div>
+					<div class="region-content">
+						<h3>天空之城</h3>
+						<p>天空之城是风元素的领域，漂浮在空中的岛屿通过气流和魔法桥梁相连。居民掌握风系魔法，擅长飞行和气象控制。</p>
+						<span class="element-badge" style="background: var(--wind);">风元素领域</span>
+					</div>
+				</div>
+
+				<div class="region-card">
+					<div class="region-image">
+						<img src="https://images.unsplash.com/photo-1468657988500-aca2be09f4c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+							alt="虚空秘境">
+					</div>
+					<div class="region-content">
+						<h3>虚空秘境</h3>
+						<p>虚空秘境是虚元素的领域，这里的空间和时间规则与外界不同。居民研究深奥魔法和空间技术，掌握着维度旅行的秘密。</p>
+						<span class="element-badge" style="background: var(--void);">虚元素领域</span>
+					</div>
+				</div>
+
+				<div class="region-card">
+					<div class="region-image">
+						<img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+							alt="元素之城">
+					</div>
+					<div class="region-content">
+						<h3>元素之城</h3>
+						<p>首都元素之城是五大区域的交汇点，融合了所有元素的特点。这里是五灵王的宫殿所在地，也是贝利亚的政治和文化中心。</p>
+						<span class="element-badge"
+							style="background: linear-gradient(to right, var(--fire), var(--water), var(--earth), var(--wind), var(--void));">五大元素交汇</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 地图区域 -->
+	<section class="map-section">
+		<div class="container">
+			<h2 class="section-title">贝利亚共和国地图</h2>
+			<div class="map-container">
+				<div class="map-point point-1" title="火焰山脉">
+					<i class="fas fa-fire"></i>
+				</div>
+				<div class="map-point point-2" title="水晶湖泊">
+					<i class="fas fa-tint"></i>
+				</div>
+				<div class="map-point point-3" title="巨石平原">
+					<i class="fas fa-mountain"></i>
+				</div>
+				<div class="map-point point-4" title="天空之城">
+					<i class="fas fa-wind"></i>
+				</div>
+				<div class="map-point point-5" title="虚空秘境">
+					<i class="fas fa-meteor"></i>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 旅行指南 -->
+	<section class="guide-section">
+		<div class="container">
+			<h2 class="section-title">旅行指南</h2>
+
+			<div class="guide-tabs">
+				<button class="tab-button active" data-tab="transport">交通方式</button>
+				<button class="tab-button" data-tab="accommodation">住宿选择</button>
+				<button class="tab-button" data-tab="activities">特色活动</button>
+				<button class="tab-button" data-tab="cuisine">美食体验</button>
+			</div>
+
+			<div class="tab-content active" id="transport">
+				<div class="guide-grid">
+					<div class="guide-item">
+						<i class="fas fa-dragon"></i>
+						<h3>飞龙骑行</h3>
+						<p>体验驾驭飞龙穿越元素领域的刺激旅程</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-hat-wizard"></i>
+						<h3>传送法阵</h3>
+						<p>使用魔法传送阵在各大城市间瞬间移动</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-water"></i>
+						<h3>水晶船</h3>
+						<p>乘坐魔法驱动的水晶船游览湖泊与河流</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-cloud"></i>
+						<h3>云鲸之旅</h3>
+						<p>搭乘温顺的云鲸欣赏天空之城的美景</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-content" id="accommodation">
+				<div class="guide-grid">
+					<div class="guide-item">
+						<i class="fas fa-fire"></i>
+						<h3>熔岩客栈</h3>
+						<p>建在火山旁的温暖住所，享受天然地热温泉</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-water"></i>
+						<h3>水晶水下酒店</h3>
+						<p>沉浸在水晶湖泊深处的魔法气泡客房中</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-mountain"></i>
+						<h3>岩石洞穴度假村</h3>
+						<p>体验巨石平原独特的洞穴住宿体验</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-cloud"></i>
+						<h3>浮空岛民宿</h3>
+						<p>住在漂浮的岛屿上，欣赏云海日出</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-content" id="activities">
+				<div class="guide-grid">
+					<div class="guide-item">
+						<i class="fas fa-gem"></i>
+						<h3>元素魔法课程</h3>
+						<p>学习基础元素魔法，感受操控自然的力量</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-dragon"></i>
+						<h3>魔法生物互动</h3>
+						<p>与火精灵、水元素等魔法生物亲密接触</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-hammer"></i>
+						<h3>矮人锻造体验</h3>
+						<p>在火焰山脉学习传奇的矮人金属锻造技术</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-leaf"></i>
+						<h3>元素花园参观</h3>
+						<p>探索由魔法培育的奇特植物和草药园</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-content" id="cuisine">
+				<div class="guide-grid">
+					<div class="guide-item">
+						<i class="fas fa-fire"></i>
+						<h3>熔岩烧烤</h3>
+						<p>品尝用火山地热烹饪的独特风味美食</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-tint"></i>
+						<h3>水晶湖鲜宴</h3>
+						<p>享受水晶湖泊特产的魔法鱼类和水生植物</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-seedling"></i>
+						<h3>大地馈赠</h3>
+						<p>品尝巨石平原肥沃土壤培育的天然有机食材</p>
+					</div>
+					<div class="guide-item">
+						<i class="fas fa-cloud"></i>
+						<h3>天空之果</h3>
+						<p>尝试只在漂浮岛屿上生长的稀有水果</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 召唤行动 -->
+	<section class="cta-section">
+		<div class="container">
+			<div class="cta-content">
+				<h2 class="section-title">准备探索贝利亚？</h2>
+				<p>无论您是寻求冒险、知识还是放松，贝利亚共和国都能满足您的需求。我们的魔法旅行顾问将为您量身定制完美的行程。</p>
+				<a href="#" class="cta-button">规划我的旅程 <i class="fas fa-compass"></i></a>
+			</div>
+		</div>
+	</section>
+
+	<!-- 页脚 -->
+	<footer>
+		<div class="container">
+			<div class="footer-content">
+				<div class="footer-column">
+					<h3>贝利亚共和国</h3>
+					<p>由伟大的五灵王创立，致力于建立元素平衡、万物和谐的理想国度。</p>
+					<p>首都：元素之城</p>
+					<p>国家格言：元素交融，万物共生</p>
+				</div>
+				<div class="footer-column">
+					<h3>快速链接</h3>
+					<ul>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 国家历史</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 政府机构</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 魔法教育部</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 元素科技部</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 外交事务</a></li>
+					</ul>
+				</div>
+				<div class="footer-column">
+					<h3>公民服务</h3>
+					<ul>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 元素亲和力测试</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 魔法技能认证</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 公民福利</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 住房申请</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 就业机会</a></li>
+					</ul>
+				</div>
+				<div class="footer-column">
+					<h3>联系我们</h3>
+					<ul>
+						<li><i class="fas fa-map-marker-alt"></i> 元素之城中央大道1号</li>
+						<li><i class="fas fa-phone"></i> +123 4567 8910</li>
+						<li><i class="fas fa-envelope"></i> info@belia-republic.gov</li>
+						<li><i class="fas fa-compass"></i> 元素维度，第五象限</li>
+					</ul>
+					<div class="social-icons" style="margin-top: 20px;">
+						<a href="#" style="color: var(--accent); margin-right: 15px; font-size: 1.5rem;"><i
+								class="fab fa-elementor"></i></a>
+						<a href="#" style="color: var(--accent); margin-right: 15px; font-size: 1.5rem;"><i
+								class="fab fa-wizards-of-the-coast"></i></a>
+						<a href="#" style="color: var(--accent); margin-right: 15px; font-size: 1.5rem;"><i
+								class="fab fa-d-and-d"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p>&copy; 2024-2025 贝利亚共和国政府 - 五灵王陛下领导下的主权国家 | 本网站仅供娱乐整活</p>
+				<p>注意：贝利亚共和国是虚构国家，本网站仅为朋友间娱乐项目</p>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		// 简单的滚动动画效果
+		document.addEventListener('DOMContentLoaded', function () {
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.style.opacity = 1;
+						entry.target.style.transform = 'translateY(0)';
+					}
+				});
+			});
+
+			// 设置需要动画的元素
+			const animatedElements = document.querySelectorAll('.region-card, .map-container, .guide-item');
+			animatedElements.forEach(el => {
+				el.style.opacity = 0;
+				el.style.transform = 'translateY(50px)';
+				el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+				observer.observe(el);
+			});
+
+			// 标签切换功能
+			const tabButtons = document.querySelectorAll('.tab-button');
+			const tabContents = document.querySelectorAll('.tab-content');
+
+			tabButtons.forEach(button => {
+				button.addEventListener('click', () => {
+					const tabId = button.getAttribute('data-tab');
+
+					// 移除所有active类
+					tabButtons.forEach(btn => btn.classList.remove('active'));
+					tabContents.forEach(content => content.classList.remove('active'));
+
+					// 添加active类到当前标签和内容
+					button.classList.add('active');
+					document.getElementById(tabId).classList.add('active');
+				});
+			});
+
+			// 地图点点击事件
+			const mapPoints = document.querySelectorAll('.map-point');
+			mapPoints.forEach(point => {
+				point.addEventListener('click', () => {
+					const title = point.getAttribute('title');
+					alert(`您选择了探索：${title}！这里充满了冒险与奇迹。`);
+				});
+			});
+		});
+	</script>
+</body>
+
+</html>
