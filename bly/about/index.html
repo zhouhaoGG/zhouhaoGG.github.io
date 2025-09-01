@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>关于国家 - 贝利亚共和国</title>
+	<link rel="stylesheet" href="../../ajax-libs-font-awesome-6.4.0-css-all.min/css/font-awesome-local.min.css">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: 'Microsoft YaHei', sans-serif;
+		}
+
+		:root {
+			--primary: #0a0a2a;
+			--secondary: #1a1a4a;
+			--accent: #d4af37;
+			--light: #e6e6ff;
+			--fire: #ff6b6b;
+			--water: #4d9de0;
+			--earth: #8a9a5b;
+			--wind: #7bd0c1;
+			--void: #a45ee5;
+		}
+
+		body {
+			background: linear-gradient(135deg, var(--primary), var(--secondary));
+			color: var(--light);
+			min-height: 100vh;
+			background-attachment: fixed;
+			overflow-x: hidden;
+		}
+
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 20px;
+		}
+
+		/* 头部样式 */
+		header {
+			background: rgba(10, 10, 42, 0.95);
+			padding: 20px 0;
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			border-bottom: 3px solid var(--accent);
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+		}
+
+		.header-content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.logo {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+		}
+
+		.logo-img {
+			width: 70px;
+			height: 70px;
+			background: linear-gradient(45deg, var(--fire), var(--water), var(--earth), var(--wind), var(--void));
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 2px solid var(--accent);
+			box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+		}
+
+		.logo-img i {
+			font-size: 36px;
+			color: white;
+		}
+
+		.logo-text {
+			text-transform: uppercase;
+		}
+
+		.logo-text h1 {
+			font-size: 28px;
+			letter-spacing: 2px;
+			background: linear-gradient(to right, #d4af37, #ffd700, #ffffff);
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+			text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+		}
+
+		.logo-text p {
+			font-size: 14px;
+			color: var(--accent);
+			letter-spacing: 3px;
+			margin-top: 5px;
+		}
+
+		nav ul {
+			display: flex;
+			list-style: none;
+			gap: 30px;
+		}
+
+		nav a {
+			color: var(--light);
+			text-decoration: none;
+			font-size: 18px;
+			font-weight: bold;
+			padding: 8px 15px;
+			border-radius: 5px;
+			transition: all 0.3s ease;
+			position: relative;
+		}
+
+		nav a:hover {
+			background: rgba(212, 175, 55, 0.2);
+			color: var(--accent);
+		}
+
+		nav a.active {
+			background: rgba(212, 175, 55, 0.2);
+			color: var(--accent);
+		}
+
+		nav a::after {
+			content: '';
+			position: absolute;
+			bottom: -5px;
+			left: 0;
+			width: 0;
+			height: 3px;
+			background: var(--accent);
+			transition: width 0.3s ease;
+		}
+
+		nav a:hover::after,
+		nav a.active::after {
+			width: 100%;
+		}
+
+		/* 英雄区域 */
+		.page-hero {
+			padding: 100px 0 60px;
+			text-align: center;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.page-hero::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: radial-gradient(circle, transparent 40%, var(--primary) 150%);
+			z-index: -1;
+		}
+
+		.page-hero h2 {
+			font-size: 3.5rem;
+			margin-bottom: 20px;
+			text-transform: uppercase;
+			letter-spacing: 5px;
+			background: linear-gradient(to right, #d4af37, #ffd700, #ffffff);
+			-webkit-background-clip: text;
+			background-clip: text;
+			color: transparent;
+			text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+		}
+
+		.page-hero p {
+			font-size: 1.2rem;
+			max-width: 800px;
+			margin: 0 auto;
+			line-height: 1.6;
+		}
+
+		/* 重要人物区域 */
+		.important-figures {
+			padding: 80px 0;
+			background: rgba(26, 26, 74, 0.7);
+		}
+
+		.section-title {
+			text-align: center;
+			font-size: 2.5rem;
+			margin-bottom: 50px;
+			color: var(--accent);
+			position: relative;
+		}
+
+		.section-title::after {
+			content: '';
+			position: absolute;
+			bottom: -15px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 100px;
+			height: 4px;
+			background: var(--accent);
+			border-radius: 2px;
+		}
+
+		.figures-container {
+			display: flex;
+			justify-content: center;
+			gap: 50px;
+			flex-wrap: wrap;
+		}
+
+		.figure-card {
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 15px;
+			padding: 30px;
+			text-align: center;
+			width: 300px;
+			transition: all 0.3s ease;
+			border: 1px solid rgba(212, 175, 55, 0.3);
+			backdrop-filter: blur(10px);
+		}
+
+		.figure-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+			border-color: var(--accent);
+		}
+
+		.figure-image {
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			margin: 0 auto 20px;
+			overflow: hidden;
+			border: 5px solid var(--accent);
+			box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+		}
+
+		.figure-image img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.figure-name {
+			font-size: 1.5rem;
+			color: var(--accent);
+			margin-bottom: 10px;
+		}
+
+		.figure-position {
+			font-size: 1.1rem;
+			color: var(--light);
+			margin-bottom: 20px;
+			padding-bottom: 15px;
+			border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+		}
+
+		.figure-description {
+			font-size: 0.95rem;
+			line-height: 1.6;
+		}
+
+		/* 国家历史 */
+		.national-history {
+			padding: 80px 0;
+		}
+
+		.history-content {
+			max-width: 900px;
+			margin: 0 auto;
+		}
+
+		.history-intro {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			margin-bottom: 50px;
+			text-align: center;
+		}
+
+		.timeline {
+			position: relative;
+			max-width: 800px;
+			margin: 0 auto;
+		}
+
+		.timeline::after {
+			content: '';
+			position: absolute;
+			width: 6px;
+			background: var(--accent);
+			top: 0;
+			bottom: 0;
+			left: 50%;
+			margin-left: -3px;
+			border-radius: 3px;
+		}
+
+		.timeline-item {
+			padding: 10px 40px;
+			position: relative;
+			width: 50%;
+			box-sizing: border-box;
+		}
+
+		.timeline-item:nth-child(odd) {
+			left: 0;
+		}
+
+		.timeline-item:nth-child(even) {
+			left: 50%;
+		}
+
+		.timeline-item::after {
+			content: '';
+			position: absolute;
+			width: 25px;
+			height: 25px;
+			background: var(--accent);
+			border: 4px solid var(--primary);
+			top: 20px;
+			border-radius: 50%;
+			z-index: 1;
+		}
+
+		.timeline-item:nth-child(odd)::after {
+			right: -13px;
+		}
+
+		.timeline-item:nth-child(even)::after {
+			left: -13px;
+		}
+
+		.timeline-content {
+			padding: 20px;
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 10px;
+			border: 1px solid rgba(212, 175, 55, 0.3);
+			backdrop-filter: blur(10px);
+		}
+
+		.timeline-date {
+			font-weight: bold;
+			color: var(--accent);
+			margin-bottom: 10px;
+			font-size: 1.2rem;
+		}
+
+		.timeline-title {
+			font-size: 1.3rem;
+			margin-bottom: 10px;
+			color: var(--accent);
+		}
+
+		.timeline-desc {
+			line-height: 1.6;
+		}
+
+		/* 国家象征 */
+		.national-symbols {
+			padding: 80px 0;
+			background: rgba(26, 26, 74, 0.7);
+		}
+
+		.symbols-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 30px;
+			margin-top: 50px;
+		}
+
+		.symbol-card {
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 15px;
+			padding: 30px;
+			text-align: center;
+			transition: all 0.3s ease;
+			border: 1px solid rgba(212, 175, 55, 0.3);
+			backdrop-filter: blur(10px);
+		}
+
+		.symbol-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+			border-color: var(--accent);
+		}
+
+		.symbol-icon {
+			font-size: 3rem;
+			color: var(--accent);
+			margin-bottom: 20px;
+		}
+
+		.symbol-card h3 {
+			font-size: 1.5rem;
+			margin-bottom: 15px;
+			color: var(--accent);
+		}
+
+		/* 政府结构 */
+		.government-structure {
+			padding: 80px 0;
+		}
+
+		.structure-content {
+			max-width: 900px;
+			margin: 0 auto;
+		}
+
+		.structure-intro {
+			font-size: 1.1rem;
+			line-height: 1.8;
+			margin-bottom: 50px;
+			text-align: center;
+		}
+
+		.org-chart {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.org-level {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 40px;
+			width: 100%;
+		}
+
+		.org-node {
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(212, 175, 55, 0.3);
+			border-radius: 10px;
+			padding: 20px;
+			text-align: center;
+			width: 200px;
+			margin: 0 15px;
+			backdrop-filter: blur(10px);
+		}
+
+		.org-node h4 {
+			color: var(--accent);
+			margin-bottom: 10px;
+		}
+
+		.org-connector {
+			position: relative;
+			height: 40px;
+			width: 2px;
+			background: var(--accent);
+			margin: 0 auto;
+		}
+
+		/* 页脚 */
+		footer {
+			background: rgba(10, 10, 42, 0.95);
+			padding: 50px 0 20px;
+			border-top: 3px solid var(--accent);
+		}
+
+		.footer-content {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 40px;
+			margin-bottom: 40px;
+		}
+
+		.footer-column h3 {
+			color: var(--accent);
+			font-size: 1.5rem;
+			margin-bottom: 20px;
+			position: relative;
+			padding-bottom: 10px;
+		}
+
+		.footer-column h3::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 50px;
+			height: 3px;
+			background: var(--accent);
+		}
+
+		.footer-column ul {
+			list-style: none;
+		}
+
+		.footer-column ul li {
+			margin-bottom: 12px;
+		}
+
+		.footer-column ul li a {
+			color: var(--light);
+			text-decoration: none;
+			transition: all 0.3s ease;
+			display: block;
+		}
+
+		.footer-column ul li a:hover {
+			color: var(--accent);
+			transform: translateX(5px);
+		}
+
+		.copyright {
+			text-align: center;
+			padding-top: 20px;
+			border-top: 1px solid rgba(212, 175, 55, 0.2);
+			font-size: 0.9rem;
+			color: #aaa;
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 992px) {
+			.timeline::after {
+				left: 31px;
+			}
+
+			.timeline-item {
+				width: 100%;
+				padding-left: 70px;
+				padding-right: 25px;
+			}
+
+			.timeline-item:nth-child(even) {
+				left: 0;
+			}
+
+			.timeline-item:nth-child(odd)::after,
+			.timeline-item:nth-child(even)::after {
+				left: 18px;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.header-content {
+				flex-direction: column;
+				gap: 20px;
+			}
+
+			nav ul {
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+
+			.page-hero h2 {
+				font-size: 2.5rem;
+			}
+
+			.org-level {
+				flex-direction: column;
+				align-items: center;
+			}
+
+			.org-node {
+				margin: 10px 0;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 头部 -->
+	<header>
+		<div class="container header-content">
+			<div class="logo">
+				<div class="logo-img">
+					<i class="fas fa-crown"></i>
+				</div>
+				<div class="logo-text">
+					<h1>贝利亚共和国</h1>
+					<p>BELIA REPUBLIC</p>
+				</div>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="https://zhouhaogg.github.io/bly/"><i class="fas fa-home"></i> 首页</a></li>
+					<li><a href="https://zhouhaogg.github.io/bly/about/"><i class="fas fa-landmark"></i> 关于国家</a></li>
+					<li><a href="#"><i class="fas fa-newspaper"></i> 国家新闻</a></li>
+					<li><a href="#"><i class="fas fa-users"></i> 政府机构</a></li>
+					<li><a href="#"><i class="fas fa-envelope"></i> 联系我们</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- 页面英雄区域 -->
+	<section class="page-hero">
+		<div class="container">
+			<h2>关于贝利亚共和国</h2>
+			<p>了解我们伟大国家的历史、重要人物以及国家象征，探索五灵王创立的元素平衡国度</p>
+		</div>
+	</section>
+
+	<!-- 重要人物 -->
+	<section class="important-figures">
+		<div class="container">
+			<h2 class="section-title">国家重要人物</h2>
+			<div class="figures-container">
+				<div class="figure-card">
+					<div class="figure-image">
+						<img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+							alt="人物一">
+					</div>
+					<h3 class="figure-name">艾莉娅·星辉</h3>
+					<p class="figure-position">元素大祭司</p>
+					<p class="figure-description">作为五灵王最信任的顾问之一，艾莉娅·星辉掌管着贝利亚共和国的精神与宗教事务。她精通五种元素的平衡之道，是元素神殿的最高主持者。</p>
+				</div>
+				<div class="figure-card">
+					<div class="figure-image">
+						<img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+							alt="人物二">
+					</div>
+					<h3 class="figure-name">凯兰·铁须</h3>
+					<p class="figure-position">首席元素工程师</p>
+					<p class="figure-description">凯兰·铁须是将传统魔法与现代科技完美结合的天才。他领导的工程团队建造了贝利亚的标志性建筑——悬浮于空中的元素之城。</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 国家历史 -->
+	<section class="national-history">
+		<div class="container">
+			<h2 class="section-title">国家历史</h2>
+			<div class="history-content">
+				<p class="history-intro">贝利亚共和国有着悠久而辉煌的历史，从五灵王统一五大元素部落至今，已走过千年岁月。我们的历史是一部元素平衡与和谐共生的壮丽史诗。</p>
+
+				<div class="timeline">
+					<div class="timeline-item">
+						<div class="timeline-content">
+							<div class="timeline-date">远古纪元</div>
+							<h3 class="timeline-title">元素部落时期</h3>
+							<p class="timeline-desc">五大元素部落（火、水、土、风、虚）各自为政，时常因元素力量失衡而发生冲突。这一时期被称为"混沌年代"。</p>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-content">
+							<div class="timeline-date">公元 1024 年</div>
+							<h3 class="timeline-title">五灵王诞生</h3>
+							<p class="timeline-desc">第一位能够平衡所有五种元素之力的王者诞生，被尊称为五灵王。他提出"元素交融，万物共生"的治国理念。</p>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-content">
+							<div class="timeline-date">公元 1048 年</div>
+							<h3 class="timeline-title">统一五大部落</h3>
+							<p class="timeline-desc">经过24年的努力，五灵王成功统一五大元素部落，建立了贝利亚共和国的前身——元素王国。</p>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-content">
+							<div class="timeline-date">公元 1202 年</div>
+							<h3 class="timeline-title">共和国成立</h3>
+							<p class="timeline-desc">第五代五灵王推行政治改革，将世袭 monarchy 改为共和制，建立贝利亚共和国，设立元素议会。</p>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-content">
+							<div class="timeline-date">公元 1567 年</div>
+							<h3 class="timeline-title">元素之城建立</h3>
+							<p class="timeline-desc">利用先进的元素悬浮技术，贝利亚人民在五大元素能量交汇点上空建造了首都"元素之城"。</p>
+						</div>
+					</div>
+					<div class="timeline-item">
+						<div class="timeline-content">
+							<div class="timeline-date">公元 2024 年</div>
+							<h3 class="timeline-title">现代复兴</h3>
+							<p class="timeline-desc">现任五灵王推行"元素科技复兴计划"，将传统元素魔法与现代科技完美融合，使贝利亚共和国进入黄金发展时期。</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 国家象征 -->
+	<section class="national-symbols">
+		<div class="container">
+			<h2 class="section-title">国家象征</h2>
+			<div class="symbols-grid">
+				<div class="symbol-card">
+					<div class="symbol-icon">
+						<i class="fas fa-shield-alt"></i>
+					</div>
+					<h3>国徽</h3>
+					<p>贝利亚国徽由五角星与五种元素符号组成，象征五大元素的平衡与和谐。中心的金色王冠代表五灵王的领导。</p>
+				</div>
+				<div class="symbol-card">
+					<div class="symbol-icon">
+						<i class="fas fa-flag"></i>
+					</div>
+					<h3>国旗</h3>
+					<p>国旗由五种颜色的水平条纹组成：红色(火)、蓝色(水)、绿色(土)、白色(风)和紫色(虚)。中央是国徽图案。</p>
+				</div>
+				<div class="symbol-card">
+					<div class="symbol-icon">
+						<i class="fas fa-dragon"></i>
+					</div>
+					<h3>国家神兽</h3>
+					<p>元素龙是贝利亚的象征性生物，据说能够同时操控五种元素力量，代表着国家的力量与智慧。</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 政府结构 -->
+	<section class="government-structure">
+		<div class="container">
+			<h2 class="section-title">政府结构</h2>
+			<div class="structure-content">
+				<p class="structure-intro">贝利亚共和国采用元素议会制，由五灵王作为国家元首，元素议会作为立法机构，五大元素部分别管理国家各项事务。</p>
+
+				<div class="org-chart">
+					<div class="org-level">
+						<div class="org-node">
+							<h4>五灵王</h4>
+							<p>国家元首</p>
+						</div>
+					</div>
+					<div class="org-connector"></div>
+					<div class="org-level">
+						<div class="org-node">
+							<h4>元素议会</h4>
+							<p>立法机构</p>
+						</div>
+					</div>
+					<div class="org-connector"></div>
+					<div class="org-level">
+						<div class="org-node">
+							<h4>火之部</h4>
+							<p>国防与能源</p>
+						</div>
+						<div class="org-node">
+							<h4>水之部</h4>
+							<p>教育与文化</p>
+						</div>
+						<div class="org-node">
+							<h4>土之部</h4>
+							<p>建设与农业</p>
+						</div>
+						<div class="org-node">
+							<h4>风之部</h4>
+							<p>外交与贸易</p>
+						</div>
+						<div class="org-node">
+							<h4>虚之部</h4>
+							<p>科技与研究</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 页脚 -->
+	<footer>
+		<div class="container">
+			<div class="footer-content">
+				<div class="footer-column">
+					<h3>贝利亚共和国</h3>
+					<p>由伟大的五灵王创立，致力于建立元素平衡、万物和谐的理想国度。</p>
+					<p>首都：元素之城</p>
+					<p>国家格言：元素交融，万物共生</p>
+				</div>
+				<div class="footer-column">
+					<h3>快速链接</h3>
+					<ul>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 国家历史</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 政府机构</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 魔法教育部</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 元素科技部</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 外交事务</a></li>
+					</ul>
+				</div>
+				<div class="footer-column">
+					<h3>公民服务</h3>
+					<ul>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 元素亲和力测试</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 魔法技能认证</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 公民福利</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 住房申请</a></li>
+						<li><a href="#"><i class="fas fa-chevron-right"></i> 就业机会</a></li>
+					</ul>
+				</div>
+				<div class="footer-column">
+					<h3>联系我们</h3>
+					<ul>
+						<li><i class="fas fa-map-marker-alt"></i> 元素之城中央大道1号</li>
+						<li><i class="fas fa-phone"></i> +123 4567 8910</li>
+						<li><i class="fas fa-envelope"></i> info@belia-republic.gov</li>
+						<li><i class="fas fa-compass"></i> 元素维度，第五象限</li>
+					</ul>
+					<div class="social-icons" style="margin-top: 20px;">
+						<a href="#" style="color: var(--accent); margin-right: 15px; font-size: 1.5rem;"><i
+								class="fab fa-elementor"></i></a>
+						<a href="#" style="color: var(--accent); margin-right: 15px; font-size: 1.5rem;"><i
+								class="fab fa-wizards-of-the-coast"></i></a>
+						<a href="#" style="color: var(--accent); margin-right: 15px; font-size: 1.5rem;"><i
+								class="fab fa-d-and-d"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<p>&copy; 2024-2025 贝利亚共和国政府 - 五灵王陛下领导下的主权国家 | 本网站仅供娱乐整活</p>
+				<p>注意：贝利亚共和国是虚构国家，本网站仅为朋友间娱乐项目</p>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		// 简单的滚动动画效果
+		document.addEventListener('DOMContentLoaded', function () {
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.style.opacity = 1;
+						entry.target.style.transform = 'translateY(0)';
+					}
+				});
+			});
+
+			// 设置需要动画的元素
+			const animatedElements = document.querySelectorAll('.figure-card, .timeline-item, .symbol-card, .org-node');
+			animatedElements.forEach(el => {
+				el.style.opacity = 0;
+				el.style.transform = 'translateY(50px)';
+				el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+				observer.observe(el);
+			});
+		});
+	</script>
+</body>
+
+</html>
