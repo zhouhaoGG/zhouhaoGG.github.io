@@ -101,6 +101,17 @@
 				font-size: 1.8rem;
 			}
 		}
+
+		#canvas_bg {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			display: block;
+			z-index: -1;
+			/* 根据需要调整层级 */
+		}
 	</style>
 </head>
 
@@ -112,6 +123,7 @@
 		<div class="en_date" id="en_date"> </div>
 		<div class="date" id="date">yyyy年mm月dd日 星期nn</div>
 	</div>
+	<canvas id="canvas_bg"></canvas>
 
 	<!-- 粒子效果库 -->
 	<script src="./particles.js-2.0.0.min.js"></script>
@@ -268,6 +280,338 @@
 			en_date_set();
 			// 每秒更新一次
 			setInterval(updateClock, 1000);
+			const canvas_bg = document.getElementById('canvas_bg');
+			// 设置事件监听器
+			window.addEventListener('resize', function () {
+				canvas_bg.width = window.innerWidth;
+				canvas_bg.height = window.innerHeight;
+			});
+			canvas_bg.width = window.innerWidth;
+			canvas_bg.height = window.innerHeight;
+			const fps = 45;
+			const interval = 1000 / fps;
+			// 双摆模拟器类
+			class DoublePendulum {
+				constructor(canvas_id) {
+					this.canvas = document.getElementById(canvas_id);
+					this.ctx = this.canvas.getContext('2d');
+
+					// 双摆参数
+					this.r1 = 75; // 第一个摆的长度
+					this.r2 = 75; // 第二个摆的长度
+					this.m1 = 10; // 第一个摆的质量
+					this.m2 = 10; // 第二个摆的质量
+					this.a1 = 0; // 第一个摆的角度
+					this.a2 = 0; // 第二个摆的角度
+					this.a1_v = 0; // 第一个摆的角速度
+					this.a2_v = 0; // 第二个摆的角速度
+					this.trail = []; // 轨迹点数组
+
+					// 物理常数
+					this.g = 9.8; // 重力常数
+					this.dt = 1 / fps; // 时间间隔
+					this.maxTrailLength = 500; // 最大轨迹长度
+				}
+
+				// 重置双摆状态
+				reset() {
+					this.a1 = (Math.random() * 2 - 1) * Math.PI * 0.8 + Math.PI;
+					this.a2 = Math.random() * 2 * Math.PI;
+					this.a1_v = 0;
+					this.a2_v = 0;
+					this.trail = [];
+				}
+
+				// 更新双摆状态
+				update() {
+					// 双摆运动方程
+					const deltaTheta = this.a2 - this.a1;
+					const M = this.m1 + this.m2;
+					const sinDelta = Math.sin(deltaTheta);
+					const cosDelta = Math.cos(deltaTheta);
+					const sinA1 = Math.sin(this.a1);
+					const sinA2 = Math.sin(this.a2);
+
+					// 计算分母部分（两个方程共用的）
+					const denominator = M - this.m2 * Math.pow(cosDelta, 2);
+
+					// 计算第一个摆的角加速度 a1_a
+					const numerator1 =
+						-this.m2 * this.r2 * Math.pow(this.a2_v, 2) * sinDelta * cosDelta +
+						this.g * this.m2 * sinA2 * cosDelta -
+						this.g * M * sinA1 -
+						this.m2 * this.r1 * Math.pow(this.a1_v, 2) * sinDelta * cosDelta;
+
+					const a1_a = numerator1 / (this.r1 * denominator);
+
+					// 计算第二个摆的角加速度 a2_a
+					const numerator2 =
+						M * this.r1 * Math.pow(this.a1_v, 2) * sinDelta +
+						this.g * M * sinA1 * cosDelta -
+						M * this.g * sinA2 +
+						this.m2 * this.r2 * Math.pow(this.a2_v, 2) * sinDelta * cosDelta;
+
+					const a2_a = numerator2 / (this.r2 * denominator);
+
+					// 更新角速度
+					this.a1_v += a1_a * this.dt;
+					this.a2_v += a2_a * this.dt;
+
+					// 更新角度
+					this.a1 += this.a1_v;
+					this.a2 += this.a2_v;
+				}
+
+				// 绘制双摆
+				draw() {
+					const scale = Math.min(this.canvas.width, this.canvas.height) / 300;
+					const scaledR1 = this.r1 * scale;
+					const scaledR2 = this.r2 * scale;
+
+					// 计算摆的末端坐标
+					const x0 = this.canvas.width * 0.75;
+					const y0 = this.canvas.height * 0.41;
+
+					const x1 = x0 + scaledR1 * Math.sin(this.a1);
+					const y1 = y0 + scaledR1 * Math.cos(this.a1);
+
+					const x2 = x1 + scaledR2 * Math.sin(this.a2);
+					const y2 = y1 + scaledR2 * Math.cos(this.a2);
+
+					// 保存轨迹
+					this.trail.push({ x: x2, y: y2 });
+					if (this.trail.length > this.maxTrailLength) {
+						this.trail.shift();
+					}
+
+					// 绘制轨迹
+					for (let i = 1; i < this.trail.length; i++) {
+						this.ctx.beginPath();
+						this.ctx.fillStyle = `rgba(255,255,255,${(i + 1) / this.trail.length})`;
+						this.ctx.arc(this.trail[i].x, this.trail[i].y, 3, 0, Math.PI * 2);
+						this.ctx.fill();
+					}
+
+					// 绘制摆线
+					this.ctx.beginPath();
+					this.ctx.strokeStyle = 'white';
+					this.ctx.lineWidth = 2;
+					this.ctx.moveTo(x0, y0);
+					this.ctx.lineTo(x1, y1);
+					this.ctx.lineTo(x2, y2);
+					this.ctx.stroke();
+
+					// 绘制摆球
+					this.ctx.beginPath();
+					this.ctx.fillStyle = '#ffffff';
+					this.ctx.arc(x1, y1, 15, 0, Math.PI * 2);
+					this.ctx.fill();
+
+					this.ctx.beginPath();
+					this.ctx.fillStyle = '#ffffff';
+					this.ctx.arc(x2, y2, 15, 0, Math.PI * 2);
+					this.ctx.fill();
+
+					// 绘制支点
+					this.ctx.beginPath();
+					this.ctx.fillStyle = 'white';
+					this.ctx.arc(x0, y0, 5, 0, Math.PI * 2);
+					this.ctx.fill();
+				}
+			}
+			class ThreeBody {
+				constructor(canvas_id) {
+					this.canvas = document.getElementById(canvas_id);
+					this.ctx = this.canvas.getContext('2d');
+
+					// 三体参数
+					this.bodies = [
+						{ x: 300, y: 300, vx: 0, vy: 0, mass: 100, radius: 10, color: '#ff6b6b' },
+						{ x: 500, y: 300, vx: 0, vy: 2, mass: 150, radius: 15, color: '#4ecdc4' },
+						{ x: 400, y: 400, vx: 2, vy: 0, mass: 200, radius: 20, color: '#ffe66d' }
+					];
+
+					// 物理常数
+					this.G = 1; // 引力常数（调整后的值）
+					this.dt = 300 / fps; // 时间间隔
+					this.trail = [[], [], []]; // 轨迹点数组
+					this.maxTrailLength = 30; // 最大轨迹长度
+				}
+
+				// 重置三体状态
+				resetBodies() {
+					// 随机初始位置和速度
+					const cx = 100 + Math.random() * (this.canvas.width - 200);
+					const cy = 100 + Math.random() * (this.canvas.height - 200);
+					this.bodies.forEach(body => {
+						body.x = cx + (Math.random() * 3 - 1) * 150;
+						body.y = cy + (Math.random() * 3 - 1) * 150;
+						body.vx = (Math.random() - 0.5) * 2;
+						body.vy = (Math.random() - 0.5) * 2;
+					});
+					this.trail = [[], [], []];
+				}
+
+				// 计算引力
+				calculateForces() {
+					const forces = [];
+
+					// 初始化力数组
+					for (let i = 0; i < this.bodies.length; i++) {
+						forces.push({ fx: 0, fy: 0 });
+					}
+
+					// 计算每对身体之间的引力
+					for (let i = 0; i < this.bodies.length; i++) {
+						for (let j = i + 1; j < this.bodies.length; j++) {
+							const body1 = this.bodies[i];
+							const body2 = this.bodies[j];
+
+							// 计算距离
+							const dx = body2.x - body1.x;
+							const dy = body2.y - body1.y;
+							const distSq = dx * dx + dy * dy;
+							const dist = Math.sqrt(distSq);
+
+							// 避免除以零
+							if (dist < body1.radius + body2.radius + 10) continue;
+
+							// 计算引力大小
+							const F = this.G * body1.mass * body2.mass / distSq;
+
+							// 计算力的分量
+							const fx = F * dx / dist;
+							const fy = F * dy / dist;
+
+							// 应用到两个物体上（方向相反）
+							forces[i].fx += fx;
+							forces[i].fy += fy;
+							forces[j].fx -= fx;
+							forces[j].fy -= fy;
+						}
+					}
+
+					return forces;
+				}
+
+				// 更新三体状态
+				update() {
+					const forces = this.calculateForces();
+
+					// 更新每个物体的速度和位置
+					for (let i = 0; i < this.bodies.length; i++) {
+						const body = this.bodies[i];
+						const force = forces[i];
+
+						// 计算加速度 (F = ma → a = F/m)
+						const ax = force.fx / body.mass;
+						const ay = force.fy / body.mass;
+
+						// 更新速度
+						body.vx += ax * this.dt;
+						body.vy += ay * this.dt;
+
+						// 限制速度大小
+						const speed = Math.sqrt(body.vx * body.vx + body.vy * body.vy);
+						if (speed > 1000) {
+							body.vx = body.vx / speed * 1000;
+							body.vy = body.vy / speed * 1000;
+						}
+
+						// 更新位置
+						body.x += body.vx * this.dt;
+						body.y += body.vy * this.dt;
+
+						if (body.x > this.canvas.width) body.x %= this.canvas.width;
+						if (body.y > this.canvas.height) body.y %= this.canvas.height;
+						if (body.x < 0) body.x = body.x % this.canvas.width + this.canvas.width;
+						if (body.y < 0) body.y = body.y % this.canvas.height + this.canvas.height;
+					}
+
+					// 保存轨迹
+					for (let i = 0; i < this.trail.length; i++) {
+						this.trail[i].push({ x: this.bodies[i].x, y: this.bodies[i].y });
+						if (this.trail[i].length > this.maxTrailLength) {
+							this.trail[i].shift();
+						}
+					}
+				}
+
+				// 绘制三体
+				draw() {
+					// 绘制轨迹
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 2;
+					for (let i = 0; i < 3; i++) {
+						for (let j = 1; j < this.trail[i].length; j++) {
+							if (Math.sqrt(Math.pow(this.trail[i][j].x - this.trail[i][j - 1].x, 2) + Math.pow(this.trail[i][j].y - this.trail[i][j - 1].y, 2)) > 1000)
+								continue;
+							this.ctx.strokeStyle = `rgba(255,255,255,${(j + 1) / this.trail[i].length})`;
+							// this.ctx.strokeStyle = '#ffffff';
+							this.ctx.moveTo(this.trail[i][j - 1].x, this.trail[i][j - 1].y);
+							this.ctx.lineTo(this.trail[i][j].x, this.trail[i][j].y);
+						}
+					}
+					this.ctx.stroke();
+
+					// 绘制每个物体
+					this.bodies.forEach(body => {
+						
+
+						// 绘制物体
+						this.ctx.beginPath();
+						this.ctx.fillStyle = body.color;
+						this.ctx.arc(body.x, body.y, body.radius, 0, Math.PI * 2);
+						this.ctx.fill();
+
+						// // 绘制光晕
+						// const gradient = this.ctx.createRadialGradient(
+						// 	body.x, body.y, body.radius,
+						// 	body.x, body.y, body.radius * 2
+						// );
+						// gradient.addColorStop(0, body.color.replace(')', ', 0.8)').replace('rgb', 'rgba'));
+						// gradient.addColorStop(1, body.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+
+						// this.ctx.beginPath();
+						// this.ctx.fillStyle = gradient;
+						// this.ctx.arc(body.x, body.y, body.radius * 2, 0, Math.PI * 2);
+						// this.ctx.fill();
+
+						// 绘制速度矢量
+						this.ctx.beginPath();
+						this.ctx.strokeStyle = '#ffffff';
+						this.ctx.lineWidth = 1;
+						this.ctx.moveTo(body.x, body.y);
+						this.ctx.lineTo(body.x + body.vx * 30, body.y + body.vy * 30);
+						this.ctx.stroke();
+
+						// console.log(body.x, body.y, body.vx, body.vy);
+					});
+				}
+			}
+
+			// 初始化双摆模拟器
+			const doublePendulum = new DoublePendulum('canvas_bg');
+			doublePendulum.reset();
+			setInterval(() => doublePendulum.resetPendulum(), 400_000);
+			// 初始化三体模拟器
+			const threeBody = new ThreeBody('canvas_bg');
+			threeBody.resetBodies();
+			setInterval(() => threeBody.resetBodies(), 400_000);
+
+			var lastTime = 0;
+			function animate(timestamp) {
+				if (timestamp - lastTime >= interval) {
+					doublePendulum.ctx.clearRect(0, 0, canvas_bg.width, canvas_bg.height);
+					doublePendulum.update();
+					doublePendulum.draw();
+					threeBody.update();
+					threeBody.draw();
+					lastTime = timestamp;
+				}
+				requestAnimationFrame((ts) => animate(ts));
+			}
+			animate(0);
 		});
 	</script>
 </body>
